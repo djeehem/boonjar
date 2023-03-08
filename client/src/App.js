@@ -1,5 +1,7 @@
+import BookList from "./components/SearchResult/SearchResult";
+
 const App = () => {
-  return <div>BoonJar</div>;
+  return <BookList />;
 };
 
 export default App;
