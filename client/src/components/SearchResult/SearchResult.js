@@ -11,7 +11,8 @@ const BookList = () => {
     event.preventDefault();
     setLoading(true);
 
-    const apiKey = "AIzaSyA6SaT23KNiiA6DnUfUQTvFeyAcQEkwnSU";
+    // const apiKey = "AIzaSyA6SaT23KNiiA6DnUfUQTvFeyAcQEkwnSU";
+    const apiKey = "AIzaSyBiCXvlzIQEdAIsJv_7iMQKhk7mZkXpzOk";
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${apiKey}`;
 
     axios
