@@ -25,7 +25,7 @@ const ScanISBN = () => {
   };
 
   const startScan = () => {
-    setIsbn("");
+    // setIsbn("");
     setIsScanning(true);
     Quagga.init(
       {
@@ -40,7 +40,6 @@ const ScanISBN = () => {
           },
         },
         decoder: {
-          // readers: ["ean_reader"],
           readers: ["ean_reader"],
         },
       },

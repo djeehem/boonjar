@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+// import dotenv from "dotenv";
 
-const BookList = () => {
+const SearchResult = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
+    const GOOGLE_BOOKS_API = process.env.REACT_APP_GOOGLE_BOOKS_API;
     event.preventDefault();
     setLoading(true);
 
-    // this is a test
-    // api backup
-    // const apiKey = "AIzaSyA6SaT23KNiiA6DnUfUQTvFeyAcQEkwnSU";
-    const apiKey = "AIzaSyBiCXvlzIQEdAIsJv_7iMQKhk7mZkXpzOk";
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${apiKey}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${GOOGLE_BOOKS_API}`;
 
     axios
       .get(url)
@@ -71,4 +69,4 @@ const BookList = () => {
   );
 };
 
-export default BookList;
+export default SearchResult;
