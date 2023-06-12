@@ -7,7 +7,7 @@ const ScanResult = (props) => {
   const [error, setError] = useState(null);
 
   const ISBN = props.isbn;
-  console.log(props.isbn);
+  // console.log(props.isbn);
 
   // const url = `https://www.googleapis.com/books/v1/volumes?q=${ISBN}&key=${apiKey}`;
   const url = `https://www.googleapis.com/books/v1/volumes?q=${ISBN}`;

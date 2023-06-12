@@ -1,21 +1,16 @@
-import express from "express";
 import mongoose from "mongoose";
-import cors from "cors";
 import dotenv from "dotenv";
 
-import router from "./routes/books.js";
+import app from "./app.js";
 import booklist from "./DUMMY_DATA.js";
-import Book from "./models/book.js";
+import Book from "./models/BookForSale.js";
 
-const app = express();
 dotenv.config();
 
-app.use(express.json({ limit: "30mb", extended: true }));
-app.use(express.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+// Set strictQuery option
+mongoose.set("strictQuery", true);
 
-app.use("/books", router);
-
+// Start server
 const PORT = process.env.PORT || 5000;
 
 mongoose
@@ -27,22 +22,25 @@ mongoose
     app.listen(PORT, () => {
       console.log(`Server running on port: ${PORT}`);
     })
-  )
-  .then(() => {
-    Book.countDocuments({}, (error, count) => {
-      if (error) {
-        console.error(error);
-      } else if (count === 0) {
-        Book.insertMany(booklist, (error) => {
-          if (error) {
-            console.error(error);
-          } else {
-            console.log("Books successfully saved to the database");
-          }
-        });
-      } else {
-        console.log("The books collection is not empty, books not saved");
-      }
-    });
-  })
-  .catch((error) => console.log(error));
+  );
+
+//   .then(() => {
+//     Book.countDocuments({}, (error, count) => {
+//       if (error) {
+//         console.error(error);
+//       } else if (count === 0) {
+//         Book.insertMany(booklist, (error) => {
+//           if (error) {
+//             console.error(error);
+//           } else {
+//             console.log("Books successfully saved to the database");
+//           }
+//         });
+//       } else {
+//         console.log("The books collection is not empty, books not saved");
+//       }
+//     });
+//   })
+//   .catch((error) => console.log(error));
+
+// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

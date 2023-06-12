@@ -1,0 +1,32 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  height: 60px;
+  padding: 0 20px;
+}
+
+.navbarLeft a,
+.navbarRight a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.navbarRight {
+  display: flex;
+  align-items: center;
+}
+
+.navbarRight a {
+  border: 1px solid #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.navbarRight a:last-child {
+  margin-right: 0;
+}

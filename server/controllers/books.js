@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Book from "../models/book.js";
+import Book from "../models/BookForSale.js";
 
 // const newBook = new Book({
 //   title: "The Great Gatsby",

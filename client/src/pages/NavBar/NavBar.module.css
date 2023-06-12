@@ -1,0 +1,76 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  height: 60px;
+  padding: 0 20px;
+}
+
+.navbarLeft a,
+.navbarRight a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.navbarLeft,
+.navbarRight {
+  display: flex;
+  align-items: center;
+}
+
+.navbarRight a:last-child {
+  margin-right: 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownToggle {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  color: #333;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dropdownMenu a {
+  display: block;
+  padding: 5px 0;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdownMenu a:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdownMenu button {
+  display: block;
+  padding: 5px 0;
+  color: #333;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  text-align: left;
+}
+
+.dropdownMenu button:hover {
+  background-color: #f5f5f5;
+}

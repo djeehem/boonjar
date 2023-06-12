@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 // import dotenv from "dotenv";
 
-const SearchResult = () => {
+const BookSearch = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,18 +14,29 @@ const SearchResult = () => {
     event.preventDefault();
     setLoading(true);
 
+    // Search endpoint
+    // const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${apiKey}`
+
+    // Volumes endpoint
+    // const bookId = 'wkKvDwAAQBAJ';
+    // const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
+
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${GOOGLE_BOOKS_API}`;
+
+    console.log(url);
 
     axios
       .get(url)
       .then((response) => {
         const bookData = response.data.items;
+        console.log(bookData);
         console.log(bookData.length);
+        console.log(bookData);
         const bookList = bookData.map((book) => ({
           id: book.id,
           title: book.volumeInfo.title,
           author: book.volumeInfo.authors
-            ? book.volumeInfo.authors
+            ? book.volumeInfo.authors.join(", ")
             : "Unknown Author",
           publisher: book.volumeInfo.publisher
             ? book.volumeInfo.publisher
@@ -45,6 +57,8 @@ const SearchResult = () => {
       });
   };
 
+  // console.log(books);
+
   return (
     <div>
       <form onSubmit={handleSearch}>
@@ -59,14 +73,16 @@ const SearchResult = () => {
       {error && <p>Error: {error}</p>}
       {books.map((book) => (
         <div key={book.id}>
-          <h1>{book.title}</h1>
-          <h2>{book.author}</h2>
-          <p>{book.publisher}</p>
-          <p>{book.description}</p>
+          <Link to={`/book/${book.id}`} state={{ value: book }}>
+            <h1>{book.title}</h1>
+            <h2>{book.author}</h2>
+            <p>{book.publisher}</p>
+            <p>{book.description}</p>
+          </Link>
         </div>
       ))}
     </div>
   );
 };
 
-export default SearchResult;
+export default BookSearch;
