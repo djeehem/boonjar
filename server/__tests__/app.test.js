@@ -12,3 +12,5 @@ describe("GET /api/books", () => {
 
 // TEST FOR Github Mimi_
 const a = 1;
+// TEST FOR Github Olivier
+const test = 79;
