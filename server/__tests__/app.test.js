@@ -9,3 +9,6 @@ describe("GET /api/books", () => {
     expect(response.type).toBe("application/json");
   });
 });
+
+// TEST FOR Github Olivier
+const test = 79;
