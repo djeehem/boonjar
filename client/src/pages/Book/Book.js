@@ -5,6 +5,8 @@ import GoogleMapsLink from "../../components/GoogleMapsLink/GoogleMapsLink";
 import GoogleMapsEmbed from "../../components/GoogleMapsEmbed/GoogleMapsEmbed";
 
 const Book = () => {
+  console.log("Book");
+
   const location = useLocation();
 
   let book;

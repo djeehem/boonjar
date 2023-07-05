@@ -4,10 +4,12 @@ import { sendPasswordResetEmail } from "../utils/email.js";
 import User from "../models/User.js";
 import bcrypt from "../utils/bcrypt.js";
 import {
-  generateToken,
-  verifyToken,
-  generatePasswordResetToken,
-  verifyPasswordResetToken,
+  generateAccessJwt,
+  generateRefreshJwt,
+  verifyAccessJwt,
+  verifyRefreshJwt,
+  generatePasswordResetJwt,
+  verifyPasswordResetJwt,
 } from "../utils/jwt.js";
 
 // Register a new user
@@ -34,9 +36,11 @@ const register = async (req, res, next) => {
     await newUser.save();
 
     // Generate JWT token
-    const token = generateToken(newUser);
+    const accessToken = generateAccessJwt(newUser);
 
-    res.status(201).json({ token });
+    const refreshToken = generateRefreshJwt(newUser);
+
+    res.status(201).json({ accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ message: error.message });
     next(error);
@@ -62,17 +66,56 @@ const login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = generateToken(user);
+    const accessToken = generateAccessJwt(newUser);
 
-    res.status(200).json({ token });
+    const refreshToken = generateRefreshJwt(newUser);
+
+    res.status(200).json({ accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     next(error);
   }
 };
 
-// Logout user
+const verifyToken = async (req, res, next) => {
+  const accessToken = req.headers.authorization.split(" ")[1];
+  console.log(accessToken);
+
+  if (!accessToken) {
+    return res.status(401).json({ message: "Access token not found" });
+  }
+
+  try {
+    const decodedToken = verifyAccessJwt(accessToken);
+    // Additional logic if needed
+    res
+      .status(200)
+      .json({ message: "JWT verification successful", decodedToken });
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+};
+
+const refreshToken = (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Refresh token not found" });
+  }
+
+  try {
+    // Verify and decode the refresh token
+    const decodedRefreshToken = verifyRefreshJwt(refreshToken);
+
+    // Generate a new access token
+    const accessToken = generateAccessJwt(decodedRefreshToken);
+
+    res.json({ accessToken });
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+};
+
 const logout = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
@@ -89,7 +132,7 @@ const forgotPassword = async (req, res, next) => {
     }
 
     // Generate password reset token
-    const token = generatePasswordResetToken(user);
+    const token = generatePasswordResetJwt(user);
 
     // Send password reset email
     sendPasswordResetEmail(user, token);
@@ -106,7 +149,7 @@ const resetPassword = async (req, res, next) => {
     const { token, password } = req.body;
 
     // Verify password reset token
-    const decodedToken = verifyPasswordResetToken(token);
+    const decodedToken = verifyPasswordResetJwt(token);
     if (!decodedToken) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
@@ -118,12 +161,20 @@ const resetPassword = async (req, res, next) => {
     await user.save();
 
     // Generate JWT token
-    const authToken = generateToken(user);
+    const accessToken = generateAccessJwt(user);
 
-    res.status(200).json({ token: authToken });
+    res.status(200).json({ accessToken });
   } catch (error) {
     next(error);
   }
 };
 
-export { register, login, logout, forgotPassword, resetPassword };
+export {
+  register,
+  login,
+  verifyToken,
+  refreshToken,
+  logout,
+  forgotPassword,
+  resetPassword,
+};

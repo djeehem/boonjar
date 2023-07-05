@@ -22,6 +22,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
 app.use(helmet());
 app.use(passport.initialize());
 app.use(morgan("dev")); // Log HTTP requests

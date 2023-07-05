@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 // import dotenv from "dotenv";
 
 const BookSearch = () => {
+  console.log("BookSearch");
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
-    const GOOGLE_BOOKS_API = process.env.REACT_APP_GOOGLE_BOOKS_API;
+    const googleApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
     event.preventDefault();
     setLoading(true);
 
@@ -21,7 +23,7 @@ const BookSearch = () => {
     // const bookId = 'wkKvDwAAQBAJ';
     // const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
 
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${GOOGLE_BOOKS_API}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${googleApiKey}`;
 
     console.log(url);
 

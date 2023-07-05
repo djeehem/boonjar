@@ -3,6 +3,8 @@ import Quagga from "quagga";
 import ScanResult from "../ScanResult/ScanResult";
 
 const ScanISBN = () => {
+  console.log("ScanISBN");
+
   const videoRef = useRef(null);
   const [isbn, setIsbn] = useState("");
   const [isScanning, setIsScanning] = useState(false);

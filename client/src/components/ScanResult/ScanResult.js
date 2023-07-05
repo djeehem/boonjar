@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const ScanResult = (props) => {
+  console.log("ScanResult");
+
   const [ISBNbook, setISBNBook] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,7 +50,7 @@ const ScanResult = (props) => {
     // return () => {
     //   setLoading(false);
     // };
-  }, [ISBN]);
+  }, [ISBN, url]);
 
   return (
     <div>

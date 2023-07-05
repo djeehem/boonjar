@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Quagga from "quagga";
 
 const Scanner = () => {
+  console.log("Scanner");
+
   const [code, setCode] = useState("");
 
   const order_by_occurrence = (arr) => {

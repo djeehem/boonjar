@@ -4,6 +4,8 @@ const startingPoint = "h4c3c2";
 const destination = "nyc";
 
 const GoogleMapsLink = () => {
+  console.log("GoogleMapsLink");
+
   const encodedStartingPoint = encodeURIComponent(startingPoint);
   const encodedDestination = encodeURIComponent(destination);
 

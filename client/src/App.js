@@ -1,3 +1,4 @@
+// import { useState, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import NavBar from "./pages/NavBar/NavBar";
@@ -13,6 +14,8 @@ import NotFound from "./pages/NotFound/NotFound";
 import PostBook from "./pages/PostBook/PostBook";
 
 const App = () => {
+  console.log("App");
+
   return (
     <main>
       <NavBar />

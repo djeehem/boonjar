@@ -1,4 +1,6 @@
 const Home = () => {
+  console.log("Home");
+
   return <p>Home</p>;
 };
 

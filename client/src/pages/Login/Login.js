@@ -5,6 +5,8 @@ import { useNavigate, Link } from "react-router-dom";
 // import styles from "./Login.module.css";
 
 const Login = () => {
+  console.log("Login");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

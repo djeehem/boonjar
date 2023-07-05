@@ -1,4 +1,6 @@
 const GeolocationButton = ({ onGeolocation }) => {
+  console.log("GeolocationButton");
+
   const handleClick = (e) => {
     e.preventDefault();
     if (navigator.geolocation) {
