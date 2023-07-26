@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 import app from "./app.js";
 import booklist from "./DUMMY_DATA.js";
-import Book from "./models/BookForSale.js";
+import Book from "./models/Book.js";
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ mongoose
   })
   .then(() =>
     app.listen(PORT, () => {
-      console.log(`Server running on port: ${PORT}`);
+      console.log(`Server running in ${process.env.NODE_ENV} on port: ${PORT}`);
     })
   );
 
