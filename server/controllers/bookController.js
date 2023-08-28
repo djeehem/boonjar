@@ -37,8 +37,7 @@ const createBook = async (req, res) => {
 // }
 const getBooksNearMe = async (req, res, next) => {
   try {
-    const { latitude, longitude, maxDistance } = req.body;
-    // console.log(req.body);
+    const { latitude, longitude, maxDistance, searchTerm } = req.query;
 
     let parsedMaxDistance;
     if (typeof maxDistance === 'undefined') {
