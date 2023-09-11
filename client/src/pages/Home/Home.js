@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import './SearchBox.css';
 
@@ -8,6 +8,20 @@ const Home = () => {
   const [postalCode, setPostalCode] = useState('');
   const [postalCodeError, setPostalCodeError] = useState(false);  // track whether the postal code input has an error.
   const [selectedDistance, setSelectedDistance] = useState(''); // State for selected distance
+
+
+  useEffect(() => {
+    // retrieve the postal code from the local storage
+    const savedPostalCode = localStorage.getItem('postalCode');
+    if (savedPostalCode) {
+      setPostalCode(savedPostalCode);
+    }
+
+    const savedSelectedDistance = localStorage.getItem('distanceSearch');
+    if(savedSelectedDistance){
+      setSelectedDistance(savedSelectedDistance);
+    }
+  }, []);
 
   const handleDistanceChange = (e) => {
     setSelectedDistance(e.target.value);
@@ -32,8 +46,8 @@ const Home = () => {
 
   const handlePostalCodeChange = (e) => {
     // Remove any characters that are not letters or numbers
-    const cleanedValue = e.target.value.replace(/[^A-Za-z0-9]/g, ''); 
-    setPostalCode(cleanedValue.toUpperCase()); // Convert to uppercase
+    const newPostalCode  = e.target.value.replace(/[^A-Za-z0-9]/g, ''); 
+    setPostalCode(newPostalCode.toUpperCase()); // Convert to uppercase
     setPostalCodeError(false); // Reset postalCodeError when the value changes
   };
 
@@ -54,7 +68,12 @@ const Home = () => {
         setPostalCodeError(true);
         return;
        }
+
        setPostalCodeError(false);
+       
+       // Save the valid postal code to Local Storage 
+       localStorage.setItem('postalCode', postalCode);
+       localStorage.setItem('distanceSearch', selectedDistance);
        
         // Send search request to the server
         const response = await axios.get('/api/books/near', {
@@ -112,7 +131,6 @@ const Home = () => {
         <div className="distance-label">
           <label>Distance</label>
           <select value={selectedDistance} onChange={handleDistanceChange}>
-            <option value="">Select</option>
             <option value="2">2 km</option>
             <option value="5">5 km</option>
             <option value="10">10 km</option>
@@ -161,7 +179,7 @@ const Home = () => {
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 export default Home;
