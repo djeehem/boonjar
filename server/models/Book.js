@@ -9,14 +9,20 @@ const BookSchema = new mongoose.Schema({
         index: true // index to search all the books for a given user
     },
 
-    title: {
-        type: String, 
-        required: [true, 'Please add a title'],
-        trim: true
-    },
     address: {
       type: String, // address entered by the user manually.  Not validated by mapquest
       required: [true, 'Please add an address']
+    },
+
+    condition: {
+      type: String,
+      enum: ["excellent", "good", "ok", "poor"],
+      required: true,
+    },
+
+    price: {
+      type: Number,
+      required: [true, 'Please add a price']
     },
   
     location: {
@@ -31,6 +37,76 @@ const BookSchema = new mongoose.Schema({
       formattedAddress: String, // address validated by mapquest
       city: String,
       stateCode: String
+    },
+
+    volumeInfo: {
+      title: {
+        type: String,
+        required: true
+      },
+      subtitle: {
+        type: String,
+      },
+      authors: [
+        {
+          type: String,
+          required: true
+        },
+      ],
+      publisher: {
+        type: String,
+      },
+      publishedDate: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      industryIdentifiers: {
+        type: {
+          type: String,
+          enum: ["ISBN_13", "ISBN_10"],
+          //required: true,
+        },
+        identifier: {
+          type: String,
+          validate: {
+            validator: function (v) {
+              return ( v && v.length === 13 || v.length === 10 );
+            },
+            message: (props) => `${props.value} is not a valid ISBN number!`,
+          },
+        },
+      },
+      pageCount: {
+        type: Number,
+      },
+      categories: [
+        {
+          type: String,
+        },
+      ],
+      imageLinks: {
+        smallThumbnail: {
+          type: String,
+        },
+        thumbnail: {
+          type: String,
+        },
+      },
+      language: {
+        type: String,
+      },
+      previewLink: {
+        type: String,
+      },
+      infoLink: {
+        type: String,
+      },
+    },
+
+    amazonLink: {
+      type: String,
     },
   
     createdAt: {

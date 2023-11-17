@@ -170,10 +170,43 @@ const Home = () => {
           <p>Search Results:</p>
           {/* Display each book data */}
           {searchResults.data.map((book, index) => (
-            <div key={index}>
-              <p>Title: {book.title}</p>
-              <p>Address: {book.location.formattedAddress}</p>
-              {/* Display other book data here */}
+            <div key={index} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+                   {book.volumeInfo.title}
+                </p>
+                <p>Author: {book.volumeInfo.authors.join(', ')}</p>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <p>Price: ${book.price}</p>
+              </div>
+            </div>
+            <p>Address: {book.location.formattedAddress}</p>
+            {/* Display other book data here */}
+            {book.volumeInfo.imageLinks ? (
+              <img
+                src={book.volumeInfo.imageLinks.thumbnail}
+                alt=""
+                style={{ width: '128px', height: '192px' }}
+              />
+              ) : (
+                <img
+                  src={`${process.env.PUBLIC_URL}/No-Cover-Image.png`}
+                  alt=""
+                  style={{ width: '128px', height: '192px' }}
+                />
+              )}
+              <p>
+                Amazon Link:{' '}
+                <a
+                  href={book.amazonLink || 'https://www.amazon.ca/books-used-books-textbooks/b?ie=UTF8&node=916520'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {book.amazonLink || 'https://www.amazon.ca/books-used-books-textbooks/b?ie=UTF8&node=916520'}
+                </a>
+              </p>
             </div>
           ))}
         </div>

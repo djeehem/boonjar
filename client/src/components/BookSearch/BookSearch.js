@@ -23,7 +23,8 @@ const BookSearch = () => {
     // const bookId = 'wkKvDwAAQBAJ';
     // const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
 
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${googleApiKey}`;
+    // TODO_COM before const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${googleApiKey}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`;
 
     console.log(url);
 
