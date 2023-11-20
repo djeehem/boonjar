@@ -179,7 +179,7 @@ const Home = () => {
                 <p>Author: {book.volumeInfo.authors.join(', ')}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p>Price: ${book.price}</p>
+                <p>Price: ${book.price.toFixed(2)}</p>
               </div>
             </div>
             <p>Address: {book.location.formattedAddress}</p>
@@ -207,6 +207,7 @@ const Home = () => {
                   {book.amazonLink || 'https://www.amazon.ca/books-used-books-textbooks/b?ie=UTF8&node=916520'}
                 </a>
               </p>
+              <p>Distance: {book.distance.toFixed(2)} km</p>
             </div>
           ))}
         </div>

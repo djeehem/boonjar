@@ -73,44 +73,48 @@ const getBooksNearMe = async (req, res, next) => {
         }
       }
     ])
+    
+    // convert the aggregation result to an array
+    const books = await booksAggregation.exec();
 
-    // convert the aggration in array
-    let books;
+    // Calculate distance and include it in the response
+    const booksWithDistance = books.map((book) => {
+      const bookLatitude = book.location.coordinates[1];
+      const bookLongitude = book.location.coordinates[0];
+      const distance = calculateDistance(latitude, longitude, bookLatitude, bookLongitude);
 
-    booksAggregation
-      .exec()
-      .then((resultBooks) => {
-        books = resultBooks;
-        
-        if (process.env.NODE_ENV === "development") {
+      // Add distance directly to the book object
+      return { ...book, distance };
+    });
 
-          // get the starting point address
-          let address;
-          geocoder.reverse({ lat: latitude, lon: longitude }, function (err, res) {
-            if (err) {
-              console.error('Error:', err);
-            } else {
-              if (res.length > 0) {
-                address = res[0].formattedAddress;
-              }
-              
-              console.log(`************ Books within the radius of ${parsedMaxDistance/1000} km ************` );
-              
-              books.forEach((book) => {
-                const distance = calculateDistance(latitude, longitude, book.location.coordinates[1], book.location.coordinates[0]);
-                console.log(`${book.title} is at ${distance} km from ${address}`);
-              });
-            }
+    // Display in the console only when NODE_ENV is "development"
+    if (process.env.NODE_ENV === 'development') {
+      // get the starting point address
+      let address;
+      geocoder.reverse({ lat: latitude, lon: longitude }, function (err, res) {
+        if (err) {
+          console.error('Error:', err);
+        } else {
+          if (res.length > 0) {
+            address = res[0].formattedAddress;
+          }
+
+          console.log(`************ Books within the radius of ${parsedMaxDistance / 1000} km ************`);
+
+          booksWithDistance.forEach((book) => {
+            console.log(`${book.volumeInfo.title} is at ${book.distance.toFixed(2)} km from ${address}`);
           });
         }
+      });
+    }
 
-        // return the response back to the client by creating a json with the values that we wanted:
-          return res.status(200).json({
-            success: true,
-            count: books.length, 
-            data: books
-        });
-      })    
+    // return the response back to the client by creating a json with the values that we wanted:
+    return res.status(200).json({
+      success: true,
+      count: booksWithDistance.length,
+      data: booksWithDistance,
+    });
+
 
   } catch (error) {
     console.error(error);
