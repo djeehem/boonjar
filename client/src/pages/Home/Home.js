@@ -8,8 +8,8 @@ const Home = () => {
   const [postalCode, setPostalCode] = useState('');
   const [postalCodeError, setPostalCodeError] = useState(false);  // track whether the postal code input has an error.
   const [selectedDistance, setSelectedDistance] = useState(''); // State for selected distance
-
-
+  const [selectedSort, setSelectedSort] = useState('');         // State for the selected sort option
+ 
   useEffect(() => {
     // retrieve the postal code from the local storage
     const savedPostalCode = localStorage.getItem('postalCode');
@@ -51,6 +51,91 @@ const Home = () => {
     setPostalCodeError(false); // Reset postalCodeError when the value changes
   };
 
+  const handleSortChange = (sortOption) => {
+
+    setSelectedSort(sortOption);
+
+    console.log('********* handleSortChange() sort option = ', sortOption);
+
+      // Trigger a new search based on the selected sort option
+      switch (sortOption) {
+        case 'price-lowest':
+        case 'price-highest':
+          if (searchResults) {
+            fetchBooksByPrice(sortOption);
+          }
+          break;
+        case 'nearest':
+          fetchBooksByNearest();
+          break;
+        default:
+          // Handle default case or do nothing
+          break;
+      }
+
+
+
+    // setSelectedSort(() => {
+    //   console.log('********* handleSortChange() sort option = ', sortOption);
+  
+    
+  
+    //   return sortOption;
+    //});
+  };
+  
+ 
+
+  const fetchBooksByPrice = async (sortOption) => {
+    try {
+
+      console.log(`********* fetchBooksByPrice sort option = ${sortOption}`);
+      
+      if (!sortOption) {
+        return;
+      }
+  
+      const sortedBooksByPrice = [...searchResults.data].sort((bookA, bookB) => {
+        // Convert prices to numbers for comparison
+        const priceA = parseFloat(bookA.price);
+        const priceB = parseFloat(bookB.price);
+  
+        // Compare prices based on the sorting order
+        return sortOption === 'price-highest' ? priceB - priceA : priceA - priceB;
+      });
+  
+      // Update the search results with the sorted books
+      setSearchResults({ data: sortedBooksByPrice });
+    } catch (error) {
+      console.error('Error fetching books by price:', error);
+    }
+  };
+  
+  
+
+  const fetchBooksByNearest = async () => {
+    try {
+      // Assuming searchResults is an array of books
+      const sortedBooksByNearest = [...searchResults.data].sort((bookA, bookB) => {
+        // Assuming the books have a 'distance' property calculated earlier
+        const distanceA = bookA.distance || 0; // Default to 0 if distance is undefined
+        const distanceB = bookB.distance || 0;
+  
+        // Compare distances
+        return distanceA - distanceB;
+      });
+  
+      // Update the state with the sorted books by nearest
+      setSearchResults({ data: sortedBooksByNearest });
+  
+      // Perform any other actions if needed
+      console.log('Books sorted by nearest distance:', sortedBooksByNearest);
+    } catch (error) {
+      console.error('Error fetching books by nearest distance:', error);
+    }
+  };
+  
+
   const searchBooks = async () => {
     try {
       // Clear previous search results
@@ -90,6 +175,7 @@ const Home = () => {
 
     // Set search results in the state
     setSearchResults(response.data);
+    
     } catch (error) {
       console.error('Error sending search request:', error);
     }
@@ -163,6 +249,22 @@ const Home = () => {
       {searchResults && (
         <p>Data Count: {searchResults.count}</p>
       )}
+
+      {/* Filter for sorting */}
+      <div>
+        <label>
+          Sort By:
+          <select
+            value={selectedSort}
+            onChange={(e) => handleSortChange(e.target.value)}
+          >
+            <option value="">Select</option>
+            <option value="price-lowest">Price (lowest)</option>
+            <option value="price-highest">Price (highest)</option>
+            <option value="nearest">Nearest</option>
+          </select>
+        </label>
+      </div>
   
       {/* Display search results */}
       {searchResults && (
