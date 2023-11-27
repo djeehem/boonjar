@@ -159,13 +159,17 @@ const Home = () => {
        // Save the valid postal code to Local Storage 
        localStorage.setItem('postalCode', postalCode);
        localStorage.setItem('distanceSearch', selectedDistance);
+
+       // TODO_COM test:
+       console.log('searchTerm: ', searchTerm);
        
         // Send search request to the server
         const response = await axios.get('/api/books/near', {
           params: {
             latitude: latLng.lat,
             longitude: latLng.lng,
-            maxDistance: selectedDistance * 1000 // convert in meters
+            maxDistance: selectedDistance * 1000, // convert in meters
+            searchTerm: searchTerm,   // Include the search term in the request
           }
     });
 

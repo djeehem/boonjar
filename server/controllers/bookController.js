@@ -56,23 +56,62 @@ const getBooksNearMe = async (req, res, next) => {
       coordinates: [parseFloat(longitude), parseFloat(latitude)]
     };
 
-    // get the books from the db
-    const booksAggregation = Book.aggregate([
+    // Create the initial aggregation pipeline
+    const aggregationPipeline = [
       {
         $geoNear: {
           near: startingPoint,
-          distanceField: "distance",
+          distanceField: 'distance',
           spherical: true,
-          key: "location.coordinates",
-          maxDistance: parsedMaxDistance
-        }
+          key: 'location.coordinates',
+          maxDistance: parsedMaxDistance,
+        },
       },
       {
         $sort: {
-          distance: 1
+          distance: 1,
+        },
+      },
+    ];
+
+    // Scenario #1: searchTerm is null or not defined
+    if (!searchTerm) {
+      // Add the initial pipeline stages to the aggregation pipeline
+      aggregationPipeline.push(
+        {
+          $project: {
+            _id: 1,
+            user: 1,
+            condition: 1,
+            price: 1,
+            location: 1,
+            volumeInfo: 1,
+            distance: 1,
+          },
+        },
+        {
+          $addFields: {
+            searchMatch: true,
+          },
         }
-      }
-    ])
+      );
+    } else {
+      // Scenario #2: searchTerm is a title, author, or ISBN
+      const regexSearchTerm = new RegExp(searchTerm, 'i');
+      // Add $match stage to filter based on title, author, or ISBN
+      aggregationPipeline.push({
+        $match: {
+          $or: [
+            { 'volumeInfo.title': { $regex: regexSearchTerm } },
+            { 'volumeInfo.authors': { $in: [regexSearchTerm] } },
+            { 'volumeInfo.industryIdentifiers.identifier': { $regex: regexSearchTerm } },
+          ],
+        },
+      });
+    }
+
+    // Execute the aggregation pipeline
+    const booksAggregation = Book.aggregate(aggregationPipeline);
     
     // convert the aggregation result to an array
     const books = await booksAggregation.exec();
