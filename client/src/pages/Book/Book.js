@@ -5,7 +5,7 @@ import GoogleMapsLink from "../../components/GoogleMapsLink/GoogleMapsLink";
 import GoogleMapsEmbed from "../../components/GoogleMapsEmbed/GoogleMapsEmbed";
 
 const Book = () => {
-  console.log("Book");
+  console.log(" *** Book");
 
   const location = useLocation();
 
@@ -14,7 +14,7 @@ const Book = () => {
   if (location.state) {
     book = location.state.value;
   }
-
+  
   return (
     <>
       {book ? (

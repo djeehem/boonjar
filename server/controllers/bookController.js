@@ -3,16 +3,16 @@ import Book from "../models/Book.js";
 import geocoder from "../utils/geocoder.js";
 
 // @desc Create a book for sale
-// @route POST http://localhost:8000/api/books/near
+// @route POST http://localhost:8000/api/books/
 const createBook = async (req, res) => {
-  console.log(req.body);  // to see what we send to the server in the POST request
-
-  const book = req.body;
+  const bookData = req.body;
 
   try {
-    // await Book.updateMany({}, { $inc: { position: 1 } });
-
-    const newBook = await Book.create(book);
+    // Extract file paths from req.files and append them to the photos array
+    const photos = req.files.map(file => file.path);
+    bookData.photos = photos;
+    
+    const newBook = await Book.create(bookData);
 
     res.status(201).json({
       status: 201,
@@ -257,8 +257,5 @@ function degToRad(degrees) {
 }
 
 // end of helper for sorting
-
-
-
 
 export { createBook, getBooksNearMe, getMyBooks, deleteBook, updateBook, updateBookPositions };

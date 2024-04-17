@@ -18,8 +18,16 @@ const registerUserApi = async (user) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.log(error);
+    // trying to insert a new User with a duplicate email value -> MongoError: E11000 duplicate key error collection
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+      console.error('Duplicate email:', error.keyValue.email);
+      // Provide feedback to the user
+      // TODO_COM a faire apres que le server 500 error -> "message": "secretOrPrivateKey must have a value".  issue with the JWT (JSON Web Token) configuration
+      throw new Error('Email address is already in use.');
+    } else {
+      console.log(error);
     throw error;
+    }
   }
 };
 

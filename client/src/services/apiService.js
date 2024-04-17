@@ -18,4 +18,17 @@ const getCoordinatesApi = async (address) => {
   }
 };
 
-export { getCoordinatesApi };
+
+const getCoordinatesFromPostalCodeApi = async (postalCode) => {
+  console.log("getCoordinatesFromPostalCodeApi with postal code = ", postalCode);
+
+  try {
+    const response = await axios.get('/api/validatePostalCode', { postalCode });
+    const coordinates = response.data;
+    return coordinates;
+  } catch (error) {
+    throw new Error("Failed to fetch coordinates from postal code.");
+  }
+};
+
+export { getCoordinatesApi, getCoordinatesFromPostalCodeApi };

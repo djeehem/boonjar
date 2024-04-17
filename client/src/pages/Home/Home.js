@@ -27,6 +27,7 @@ const Home = () => {
     setSelectedDistance(e.target.value);
   };
 
+  // TODO_COM deplacer dans endroit commun.  Aussi dans Register.js SaveBook.js
   const isValidPostalCode = (postalCode) => {
     
     // Remove spaces and convert to uppercase
@@ -44,6 +45,7 @@ const Home = () => {
     }
   };
 
+  // TODO_COM mettre en commun car utiliser dans Register.js et SaveBook.js
   const handlePostalCodeChange = (e) => {
     // Remove any characters that are not letters or numbers
     const newPostalCode  = e.target.value.replace(/[^A-Za-z0-9]/g, ''); 
@@ -148,8 +150,8 @@ const Home = () => {
       }
 
        // get the lat/long from Mapquest
-       const latLng = await getLatLongForPostalCode(postalCode);
-       if(!latLng){
+       const coords = await getCoordinatesFromPostalCode(postalCode);
+       if(!coords){
         setPostalCodeError(true);
         return;
        }
@@ -157,7 +159,7 @@ const Home = () => {
        setPostalCodeError(false);
        
        // Save the valid postal code to Local Storage 
-       localStorage.setItem('postalCode', postalCode);
+       localStorage.setItem('postalCode', postalCode);  // TODO_COM verifier si on set le postalCode ici
        localStorage.setItem('distanceSearch', selectedDistance);
 
        // TODO_COM test:
@@ -166,8 +168,8 @@ const Home = () => {
         // Send search request to the server
         const response = await axios.get('/api/books/near', {
           params: {
-            latitude: latLng.lat,
-            longitude: latLng.lng,
+            latitude: coords.lat,
+            longitude: coords.lng,
             maxDistance: selectedDistance * 1000, // convert in meters
             searchTerm: searchTerm,   // Include the search term in the request
           }
@@ -185,9 +187,10 @@ const Home = () => {
     }
   };
 
-  const getLatLongForPostalCode = async (postalCode) => {
+  // TODO_COM mettre en commun car utiliser dans Register.js et dans SaveBook.js
+  const getCoordinatesFromPostalCode = async (postalCode) => {
     try {
-      const response = await axios.get('/get-lat-long', {
+      const response = await axios.get('/getMapquestCoordinates', {
           params: {
               postalCode: postalCode,
           },

@@ -12,6 +12,7 @@ import Account from "./pages/Account/Account";
 import Settings from "./pages/Settings/Settings";
 import NotFound from "./pages/NotFound/NotFound";
 import PostBook from "./pages/PostBook/PostBook";
+import SaveBook from "./pages/SaveBook/SaveBook";
 
 const App = () => {
   console.log("App");
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/book/:id" element={<Book />} />
         <Route path="/post-book" element={<PostBook />} />
+        <Route path="/save-book" element={<SaveBook />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

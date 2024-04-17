@@ -22,6 +22,16 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleClick = (e) => {
+      // TODO_COM test:
+      console.log('+++++++++++++ handleClick in NavBar.js');
+
+      // TODO_COM prevent the handleClick when in children like BookSearch.js
+      if (!e.target.closest('.your-component-class')) {
+        // Close the dropdown or perform other actions
+        setIsDropdownOpen(false);
+      }
+
+      
       setIsDropdownOpen(false);
     };
 
@@ -37,6 +47,7 @@ const NavBar = () => {
       <div className={styles.navbarLeft}>
         <Link to="/">Home</Link>
         <Link to="/post-book">Post Book</Link>
+        <Link to="/save-book">Save Book</Link>
       </div>
       <div className={styles.navbarRight}>
         <Link to="/about">About</Link>

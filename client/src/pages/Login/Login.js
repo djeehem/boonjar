@@ -37,6 +37,26 @@ const Login = () => {
       const { token } = response.data;
       // Save the token to local storage or session storage
       document.cookie = `token=${token}; path=/`;
+
+      // TODO_COM:
+      console.log("USER LOGIN data -->", response.data);
+      console.log("USER LOGIN token -->", token);
+      const user = response.data;
+
+      //TODO_COM 
+      // save the postalCode to local storage
+      if (user.data.coordinates && user.data.coordinates.longitude && user.data.coordinates.latitude) {
+        const userLat = user.data.coordinates.latitude;
+        const userLong = user.data.coordinates.longitude;
+      
+        // Save in localStorage
+        localStorage.setItem('userLat', userLat);
+        localStorage.setItem('userLong', userLong);
+      
+        console.log('long/latitude are stored localStorage.');
+      }
+      //localStorage.setItem('postalCode', postalCode);
+     
       // Redirect or perform any other actions after successful login
       navigate("/");
     } catch (error) {

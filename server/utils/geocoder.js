@@ -1,5 +1,8 @@
 import nodeGeocoder from "node-geocoder";
 
+// geocoding (converting addresses to coordinates) 
+// reversing geocoding (converting coordinates to addresses).
+
 const options = {
     provider: process.env.GEOCODER_PROVIDER,
     httpAdapter: 'https',

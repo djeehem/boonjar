@@ -12,11 +12,10 @@ const userSchema = new mongoose.Schema({
     min: 6,
   },
   location: {
-    // street: { type: String, default: "" },
-    // city: { type: String, default: "" },
-    // state: { type: String, default: "" },
-    // country: { type: String, default: "" },
-    address: { type: String },
+    postalCode: {
+      type: String,
+      required: [true, 'Please add a postal code'],
+    },
     coordinates: {
       longitude: { type: String, default: "" },
       latitude: { type: String, default: "" },
@@ -121,15 +120,10 @@ const userSchema = new mongoose.Schema({
   //     ref: "Book",
   //   },
   // ],
-  // createdAt: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-  // updatedAt: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-  // { timestamps: true }
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 const User = mongoose.model("User", userSchema);

@@ -1,13 +1,18 @@
 import jwt from "jsonwebtoken";
 
+// TODO_COM: ACCESS_TOKEN_SECRET et REFRESH_TOKEN_SECRET sont pas definis dans process.env
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 const generateAccessJwt = (user) => {
   const payload = { email: user.email, id: user._id };
 
   const options = { expiresIn: "10m" };
+
+  // TODO_COM test:
+  console.log("*************** payload = ", payload);
+  console.log("*************** options = ", options);
+  console.log("*************** ACCESS_TOKEN_SECRET = ", ACCESS_TOKEN_SECRET);
 
   return jwt.sign(payload, ACCESS_TOKEN_SECRET, options);
 };

@@ -66,11 +66,15 @@ const login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const accessToken = generateAccessJwt(newUser);
+    // TODO_COM test: 
+    console.log("in userAuthController USER = ", user);
 
-    const refreshToken = generateRefreshJwt(newUser);
+    // TODO_COM @Mimi: ca ne fonctionne pas avec erreur secretOrPrivateKey must have a value
+    //TODO_COM remettre const accessToken = generateAccessJwt(user);
+    //TODO_COM remettre const refreshToken = generateRefreshJwt(user);
 
-    res.status(200).json({ accessToken, refreshToken });
+    //TODO_COM remettre res.status(200).json({ accessToken, refreshToken });
+    res.status(200);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     next(error);
